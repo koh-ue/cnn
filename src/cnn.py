@@ -31,7 +31,7 @@ from src.utils.printcolor import BOLD_BLUE, BOLD_GREEN, BOLD_RED, BOLD_YELLOW, E
 parser = argparse.ArgumentParser(add_help=True)
 
 parser.add_argument("--zipfile", type=str, default="../result/data_1/UNITV_Training.zip")
-parser.add_argument("--batch_size", type=int, required=10)
+parser.add_argument("--batch_size", type=int, default=10)
 parser.add_argument("--num_epoch", type=int, default=40)
 parser.add_argument("--size", type=int, default=512)
 #parser.add_argument("--is_competition", action="store_true")
