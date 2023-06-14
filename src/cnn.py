@@ -31,13 +31,16 @@ from src.utils.printcolor import BOLD_BLUE, BOLD_GREEN, BOLD_RED, BOLD_YELLOW, E
 parser = argparse.ArgumentParser(add_help=True)
 
 parser.add_argument("--zipfile", type=str, default="../result/data_1/UNITV_Training.zip")
-#parser.add_argument("--seed", type=int, required=True)
-#parser.add_argument("--distance", type=float, default=42.195)
-#parser.add_argument("--condition", type=str, choices=["sunny", "rainy", "cloudy"], default="sunny")
+parser.add_argument("--batch_size", type=int, required=10)
+parser.add_argument("--num_epoch", type=int, default=40)
+parser.add_argument("--size", type=int, default=512)
 #parser.add_argument("--is_competition", action="store_true")
 
 args = parser.parse_args()
 
+BATCH_SIZE = args.batch_size
+SIZE = 512
+NUM_EPOCHS = 20
 # NOTE: AREA for functions.
 
 @decorators.show_start_end
@@ -136,9 +139,6 @@ class CNN(nn.Module):
 
 if __name__ == '__main__':
     data_df = load_zip(args.zipfile)
-    
-    BATCH_SIZE = 2
-    SIZE = 512
 
     image_dataset = OwnDataset(data_df, (SIZE, SIZE))
     train_dataset, valid_dataset = torch.utils.data.random_split( image_dataset, [int(len(image_dataset))-20, 20])
@@ -165,13 +165,13 @@ if __name__ == '__main__':
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(net.parameters(), lr=0.1)
     nll_loss = nn.NLLLoss()
-    num_epochs = 20
+    
 
     train_losses, train_accs = [], []
     valid_losses, valid_accs = [], []
 
-    for epoch in range(num_epochs):
-        print(BOLD_YELLOW + f'Epoch {epoch+1}/{num_epochs}' + END)
+    for epoch in range(NUM_EPOCHS):
+        print(BOLD_YELLOW + f'Epoch {epoch+1}/{NUM_EPOCHS}' + END)
         print(BOLD_YELLOW + '-------------' + END)
         for phase in ['train', 'valid']:
             if phase == 'train':
@@ -212,16 +212,16 @@ if __name__ == '__main__':
 
     fig = plt.figure(figsize=(20, 18))
     ax_loss = fig.add_subplot(121)
-    ax_loss.plot(np.arange(num_epochs), np.array(train_losses))
+    ax_loss.plot(np.arange(NUM_EPOCHS), np.array(train_losses))
     ax_acc = fig.add_subplot(122)
-    ax_acc.plot(np.arange(num_epochs), np.array(train_accs))
+    ax_acc.plot(np.arange(NUM_EPOCHS), np.array(train_accs))
     fig.savefig(f"{os.path.dirname(args.zipfile)}/train_loss_accs.pdf")
 
     fig = plt.figure(figsize=(20, 18))
     ax_loss = fig.add_subplot(121)
-    ax_loss.plot(np.arange(num_epochs), np.array(valid_losses))
+    ax_loss.plot(np.arange(NUM_EPOCHS), valid_losses.to('cpu').detach().numpy().copy())
     ax_acc = fig.add_subplot(122)
-    ax_acc.plot(np.arange(num_epochs), np.array(valid_accs))
+    ax_acc.plot(np.arange(NUM_EPOCHS), valid_accs.to('cpu').detach().numpy().copy())
     fig.savefig(f"{os.path.dirname(args.zipfile)}/valid_loss_accs.pdf")
     
 
