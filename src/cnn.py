@@ -32,7 +32,7 @@ parser = argparse.ArgumentParser(add_help=True)
 
 parser.add_argument("--zipfile", type=str, default="../result/data_1/UNITV_Training.zip")
 parser.add_argument("--batch_size", type=int, default=10)
-parser.add_argument("--num_epoch", type=int, default=40)
+parser.add_argument("--num_epochs", type=int, default=40)
 parser.add_argument("--size", type=int, default=512)
 #parser.add_argument("--is_competition", action="store_true")
 
@@ -40,7 +40,7 @@ args = parser.parse_args()
 
 BATCH_SIZE = args.batch_size
 SIZE = 512
-NUM_EPOCHS = 20
+NUM_EPOCHS = args.num_epochs
 # NOTE: AREA for functions.
 
 @decorators.show_start_end
@@ -212,9 +212,9 @@ if __name__ == '__main__':
 
     fig = plt.figure(figsize=(20, 18))
     ax_loss = fig.add_subplot(121)
-    ax_loss.plot(np.arange(NUM_EPOCHS), np.array(train_losses))
+    ax_loss.plot(np.arange(NUM_EPOCHS), train_losses.to('cpu').detach().numpy().copy())
     ax_acc = fig.add_subplot(122)
-    ax_acc.plot(np.arange(NUM_EPOCHS), np.array(train_accs))
+    ax_acc.plot(np.arange(NUM_EPOCHS), train_accs.to('cpu').detach().numpy().copy())
     fig.savefig(f"{os.path.dirname(args.zipfile)}/train_loss_accs.pdf")
 
     fig = plt.figure(figsize=(20, 18))
