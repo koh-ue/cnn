@@ -52,8 +52,9 @@ def load_zip(zipfile_path):
         for target_dir in [train_dir, valid_dir]:
             for numbered_class in [file for file in os.listdir(target_dir) if os.path.isdir(os.path.join(target_dir, file))]:
                 for img_file in os.listdir(os.path.join(target_dir, f"{numbered_class}")):
-                    img_df = pd.DataFrame([[f"{target_dir}/{numbered_class}/{img_file}", img_file, int(numbered_class), int(numbered_class)-1]], columns=['path', 'filename', 'category', 'label'])
-                    df = pd.concat([df, img_df], ignore_index=True, axis=0)
+                    if not img_file.startswith('.'):
+                        img_df = pd.DataFrame([[f"{target_dir}/{numbered_class}/{img_file}", img_file, int(numbered_class), int(numbered_class)-1]], columns=['path', 'filename', 'category', 'label'])
+                        df = pd.concat([df, img_df], ignore_index=True, axis=0)
         return df
     except:
         print(BOLD_RED + 'error: something is wrong.' + END)
