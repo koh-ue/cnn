@@ -61,13 +61,24 @@ def load_zip(zipfile_path):
 
 
 
-class DataTransformer:
-    def __init__(self):
-        self.device = "cuda" if torch.cuda.is_available() else "cpu"
-
-    def __call__(self, x):
-        x = torch.from_numpy(x.astype(np.float32))
-        return x
+class DeviceDataLoader(object):
+    def __init__(self, dl):
+        self.dl = dl
+        self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        print(f"device = {self.device}")
+    
+    def __iter__(self):
+        for b in self.dl:
+            yield self.to_device(b, self.device)
+    
+    def __len__(self):
+        return len(self.dl)
+    
+    def to_device(self, data, device):
+        if isinstance(data, (list, tuple)):
+            return [self.to_device(x, device) for x in data]
+        return data.to(device, non_blocking=True)
+        
 
 class OwnDataset(Dataset):
     def __init__(self, train_df, input_size, phase='train',transform=None):
@@ -134,6 +145,9 @@ if __name__ == '__main__':
     assert len(train_dataset)%BATCH_SIZE == 0 and len(valid_dataset)%BATCH_SIZE == 0
     train_dataloader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=2, pin_memory=True)
     valid_dataloader = DataLoader(valid_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=2, pin_memory=True)
+
+    train_dataloader = DeviceDataLoader(train_dataloader)
+    valid_dataloader = DeviceDataLoader(valid_dataloader)
 
     dataloaders_dict = {
         'train': train_dataloader,
