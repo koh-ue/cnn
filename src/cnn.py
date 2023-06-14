@@ -38,10 +38,6 @@ parser.add_argument("--zipfile", type=str, default="../result/data_1/UNITV_Train
 
 args = parser.parse_args()
 
-if torch.cuda.is_available():
-    torch.set_default_device('cuda')
-    print('cuda')
-
 # NOTE: AREA for functions.
 
 @decorators.show_start_end
