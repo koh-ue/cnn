@@ -200,7 +200,7 @@ if __name__ == '__main__':
 
             print('{} Loss: {:.4f} Acc: {:.4f}'.format(phase, epoch_loss, epoch_acc))
             if phase == 'train':
-                print(type(epoch_acc))
+                print(epoch_acc)
                 train_losses.append(epoch_loss.numpy())
                 train_accs.append(epoch_acc)
             else:
