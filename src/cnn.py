@@ -40,7 +40,7 @@ args = parser.parse_args()
 
 if torch.cuda.is_available():
     torch.set_default_device('cuda')
-    print(torch.device())
+    print('cuda')
 
 # NOTE: AREA for functions.
 
