@@ -200,12 +200,12 @@ if __name__ == '__main__':
 
             print('{} Loss: {:.4f} Acc: {:.4f}'.format(phase, epoch_loss, epoch_acc))
             if phase == 'train':
-                print(epoch_acc[0])
-                train_losses.append(epoch_loss.to('cpu'))
-                train_accs.append(epoch_acc)
+                print(epoch_acc.item())
+                train_losses.append(epoch_loss.item())
+                train_accs.append(epoch_acc.item())
             else:
-                valid_losses.append(epoch_loss)
-                valid_accs.append(epoch_acc)
+                valid_losses.append(epoch_loss.item())
+                valid_accs.append(epoch_acc.item())
             if epoch == 0:
                 model_img = make_dot(outputs, params=dict(net.named_parameters()))
                 model_img.format = 'png'
