@@ -34,7 +34,7 @@ parser.add_argument("--zipfile", type=str, default="../result/data_1/UNITV_Train
 parser.add_argument("--batch_size", type=int, default=10)
 parser.add_argument("--num_epochs", type=int, default=40)
 parser.add_argument("--size", type=int, default=512)
-#parser.add_argument("--is_competition", action="store_true")
+parser.add_argument("--learning_rate", type=float, default=0.01)
 
 args = parser.parse_args()
 
@@ -163,7 +163,7 @@ if __name__ == '__main__':
     print(net)
 
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(net.parameters(), lr=0.1)
+    optimizer = optim.SGD(net.parameters(), lr=args.learning_rate)
     nll_loss = nn.NLLLoss()
     
 
