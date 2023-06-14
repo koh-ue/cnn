@@ -157,6 +157,8 @@ if __name__ == '__main__':
     batch_iterator = iter(dataloaders_dict['train'])
     
     net = CNN(out_features_size=4)
+    if torch.cuda.is_available():
+        net.cuda('cuda')
     print(net)
 
     criterion = nn.CrossEntropyLoss()
