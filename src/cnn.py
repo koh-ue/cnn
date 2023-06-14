@@ -63,7 +63,7 @@ def load_zip(zipfile_path):
 
 class DeviceDataLoader(DataLoader):
     def __init__(self, dl):
-        super().__init__()
+        super().__init__(dl.dataset, batch_size=dl.batch_size, shuffle=dl.shuffle, num_workers=dl.num_workers, pin_memory=dl.pin_memory)
         self.dl = dl
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
         print(f"device = {self.device}")
