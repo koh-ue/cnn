@@ -210,18 +210,32 @@ if __name__ == '__main__':
                 model_img.format = 'png'
                 model_img.render('graph')
 
-    fig = plt.figure(figsize=(20, 18))
+    fig = plt.figure(figsize=(10, 6))
     ax_loss = fig.add_subplot(121)
     ax_loss.plot(np.arange(NUM_EPOCHS), np.array(train_losses))
+    ax_loss.grid()
+    ax_loss.set_title("Loss per Epoch")
+
     ax_acc = fig.add_subplot(122)
     ax_acc.plot(np.arange(NUM_EPOCHS), np.array(train_accs))
+    ax_acc.grid()
+    ax_acc.set_title("Accuracy per Epoch")
+
+    fig.suptitle("Training Data")
     fig.savefig(f"{os.path.dirname(args.zipfile)}/train_loss_accs.pdf")
 
-    fig = plt.figure(figsize=(20, 18))
+    fig = plt.figure(figsize=(10, 6))
     ax_loss = fig.add_subplot(121)
     ax_loss.plot(np.arange(NUM_EPOCHS), np.array(valid_losses))
+    ax_loss.grid()
+    ax_loss.set_title("Loss per Epoch")
+
     ax_acc = fig.add_subplot(122)
     ax_acc.plot(np.arange(NUM_EPOCHS), np.array(valid_accs))
+    ax_acc.grid()
+    ax_acc.set_title("Accuracy per Epoch")
+
+    fig.suptitle("Validation Data")
     fig.savefig(f"{os.path.dirname(args.zipfile)}/valid_loss_accs.pdf")
     
 
