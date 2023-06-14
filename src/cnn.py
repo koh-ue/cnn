@@ -200,11 +200,11 @@ if __name__ == '__main__':
 
             print('{} Loss: {:.4f} Acc: {:.4f}'.format(phase, epoch_loss, epoch_acc))
             if phase == 'train':
-                train_losses.append(epoch_loss)
-                train_accs.append(epoch_acc)
+                train_losses.append(epoch_loss.to('cpu').detach().numpy().copy())
+                train_accs.append(epoch_acc.to('cpu').detach().numpy().copy())
             else:
-                valid_losses.append(epoch_loss)
-                valid_accs.append(epoch_acc)
+                valid_losses.append(epoch_loss.to('cpu').detach().numpy().copy())
+                valid_accs.append(epoch_acc.to('cpu').detach().numpy().copy())
             if epoch == 0:
                 model_img = make_dot(outputs, params=dict(net.named_parameters()))
                 model_img.format = 'png'
@@ -212,16 +212,16 @@ if __name__ == '__main__':
 
     fig = plt.figure(figsize=(20, 18))
     ax_loss = fig.add_subplot(121)
-    ax_loss.plot(np.arange(NUM_EPOCHS), train_losses.to('cpu').detach().numpy().copy())
+    ax_loss.plot(np.arange(NUM_EPOCHS), np.array(train_losses))
     ax_acc = fig.add_subplot(122)
-    ax_acc.plot(np.arange(NUM_EPOCHS), train_accs.to('cpu').detach().numpy().copy())
+    ax_acc.plot(np.arange(NUM_EPOCHS), np.array(train_accs))
     fig.savefig(f"{os.path.dirname(args.zipfile)}/train_loss_accs.pdf")
 
     fig = plt.figure(figsize=(20, 18))
     ax_loss = fig.add_subplot(121)
-    ax_loss.plot(np.arange(NUM_EPOCHS), valid_losses.to('cpu').detach().numpy().copy())
+    ax_loss.plot(np.arange(NUM_EPOCHS), np.array(valid_losses))
     ax_acc = fig.add_subplot(122)
-    ax_acc.plot(np.arange(NUM_EPOCHS), valid_accs.to('cpu').detach().numpy().copy())
+    ax_acc.plot(np.arange(NUM_EPOCHS), np.array(valid_accs))
     fig.savefig(f"{os.path.dirname(args.zipfile)}/valid_loss_accs.pdf")
     
 
