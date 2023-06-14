@@ -151,7 +151,7 @@ if __name__ == '__main__':
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(net.parameters(), lr=0.1)
     nll_loss = nn.NLLLoss()
-    num_epochs = 2
+    num_epochs = 20
 
     train_losses, train_accs = [], []
     valid_losses, valid_accs = [], []
