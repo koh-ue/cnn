@@ -201,10 +201,11 @@ if __name__ == '__main__':
             print('{} Loss: {:.4f} Acc: {:.4f}'.format(phase, epoch_loss, epoch_acc))
             if phase == 'train':
                 print(epoch_loss)
-                train_losses.append(epoch_loss.item())
+                print(epoch_acc.item())
+                train_losses.append(epoch_loss)
                 train_accs.append(epoch_acc.item())
             else:
-                valid_losses.append(epoch_loss.item())
+                valid_losses.append(epoch_loss)
                 valid_accs.append(epoch_acc.item())
             if epoch == 0:
                 model_img = make_dot(outputs, params=dict(net.named_parameters()))
